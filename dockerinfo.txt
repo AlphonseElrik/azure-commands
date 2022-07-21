@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1
+WORKDIR /app
+COPY . .
+ENV ASPNETCORE_URLS http://*:5000
+EXPOSE 5000 
+ENTRYPOINT ["dotnet", "proj.dll"]
+--------------------------------------
+DOCKER SET-UP Commands:-
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update
+sudo apt install docker-ce
+
+sudo systemctl status docker 
+--------------------------------------
+DOCKER COMMANDS:-
+sudo docker build -t dotnetapp .
+sudo docker run -d -p 5000:5000 dotnetapp
