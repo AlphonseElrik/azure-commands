@@ -1,0 +1,73 @@
+mkdir testproj
+cd testproj
+cat > inventory.txt
+target1 ansible_host=192.168.1.114 ansible_ssh_pass=my_password1
+target2 ansible_host=192.168.1.115 ansible_ssh_pass=my_password2
+
+to run this text file
+ansible target1 -m ping -i inventory.txt
+
+to disable host key
+vi /etc/ansible/ansible.cfg
+and search for host key in that file by typing /host_key
+uncomment #host_key_checking = False
+
+web1 ansible_host=server1.company.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Password123!
+web2 ansible_host=server2.company.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Password123!
+web3 ansible_host=server3.company.com ansible_connection=ssh ansible_user=root ansible_ssh_pass=Password123!
+db1 ansible_host=server4.company.com ansible_connection=winrm ansible_user=administrator ansible_password=Password123!
+
+#to group the servers
+[web_servers]
+web1
+web2
+web3
+
+[db_servers]
+db1
+
+#group of groups
+[all_servers:children]
+web_servers
+db_servers
+
+=======================
+
+Playbook defines a set of tasks/activities to be run on hosts
+Task - An action performed by the host
+
+-
+  name: Play1
+  hosts: localhost
+  tasks: 
+    - name: execute command 'date'
+	  command: date
+   
+    - name: execute script on server
+	  command: test_script.sh
+	  
+	- name: install the server
+	  yum:
+	    name: httpd
+		state: present
+	  
+    - name: start we server
+	  service:
+	    name: httpd
+		state: started
+  
+=========================
+ansible all -m ping -i inventory.txt		#imparative command
+
+#declarative command/playbook
+vi playbook-pingtest.yaml
+
+-
+  name: Test connectivity to target server
+  host: all 
+  tasks: 
+    - name: Ping test 
+	  ping: 
+	  
+	  
+ansible-playbook playbook-pingtest.yaml -i inventory.txt

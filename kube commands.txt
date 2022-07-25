@@ -1,7 +1,7 @@
 // Here we will create a new resource group
 az group create --name kubegrp --location eastus
 
-// Then we will create a new Kubernetes cluster
+// Then we will create a new Kubernetes cluster can be done manually
 az aks create --resource-group kubegrp --name demo --node-count 1 --enable-addons monitoring --generate-ssh-keys
 
 // This allows kubectl to connect to the Kubernetes cluster
